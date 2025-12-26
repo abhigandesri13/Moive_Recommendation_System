@@ -99,7 +99,7 @@ http://localhost:8501
 
 The Movie Recommendation System is deployed using **Streamlit Cloud** and can be accessed here:
 
-🔗 **Live App:** https://<your-streamlit-app-link>
+🔗 **Live App:** https://ai-movie-recommendation-system.streamlit.app/
 
 > Note: The app may take a few seconds to load due to cold start behavior on free hosting.
 
