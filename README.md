@@ -1,182 +1,387 @@
-## 🎬 **Movie Recommendation System**  
-### **Dynamix Networks – Machine Learning Internship (Task 2)**  
+# ðŸŽ¬ CineMatch â€” Movie Recommendation & Personalization Engine
 
-This project was developed as part of the **Machine Learning Internship at Dynamix Networks**.  
-A complete **Hybrid Movie Recommendation System** is implemented using the **MovieLens Latest-Small dataset**.  
+CineMatch is a movie recommendation application that helps users discover movies through content similarity, personalized recommendations and popularity-based ranking.
 
-The system includes:  
-- **Collaborative Filtering**  
-- **Content-Based Filtering**  
-- **Personalized User Recommendations**  
-- **RMSE Evaluation**  
-- **Local Streamlit User Interface for Demo**  
+The project combines an expanded MovieLens movie catalog with MovieLens rating history and on-demand TMDB movie metadata.
 
+**Application:** Streamlit
+**Language:** Python 3.13
+**Project type:** Recommendation Systems / Machine Learning
 
 ---
 
-## 📁 **Dataset Information**  
+## 1. Features
 
-**Dataset:** MovieLens Latest-Small  
-**Users:** 610  
-**Movies:** 9,742  
-**Ratings:** 100,836  
-**Source:** https://grouplens.org/datasets/movielens/latest/  
+### Similar Movies
+- Search movies by title.
+- Find similar movies using TF-IDF content representations.
+- Uses movie genres and tags.
+- Ranks movies using cosine similarity.
 
-Files used:  
-- `ratings.csv`  
-- `movies.csv`  
-- `tags.csv`  
-- `links.csv`  
+### Personalized Recommendations
+- Select an existing MovieLens user.
+- Builds a user preference profile from positively rated movies.
+- Treats ratings of 4.0 and above as positive preferences.
+- Excludes movies the user has already rated.
 
-Folder structure:                                                                           
-data/                                                                                           
-  ratings.csv     
-  movies.csv                                                                           
-  tags.csv                  
-  links.csv  
+### Popular Movies
+- Uses average ratings and rating counts.
+- Applies a weighted-rating approach to reduce the influence of movies with very few ratings.
 
+### Movie Details
+- Movie posters.
+- TMDB ratings and vote counts.
+- Movie descriptions.
+- Runtime and director.
+- Cast information.
+- Links to the movie's TMDB page.
 
+TMDB information is retrieved on demand when a movie is displayed.
 
----
-
-## 📌 **Core System Features**  
-
-### **1️⃣ Collaborative Filtering**  
-Recommends movies based on user–item rating similarities.  
-Cosine similarity is used to find movies rated similarly to a selected movie.  
-
-### **2️⃣ Content-Based Filtering**  
-Uses:  
-- TF-IDF on genres + tags  
-- Cosine similarity  
-Returns movies with similar attributes to the selected title.  
-
-### **3️⃣ Personalized Recommendations**  
-Predicts movie preferences for individual users using rating patterns.  
-
-### **4️⃣ RMSE Evaluation**  
-A baseline model is used to calculate RMSE and measure rating prediction error.  
-
+### Filters
+- Genre selection.
+- Release-year range.
+- Number of recommendations.
 
 ---
 
-## 🧪 **Model-Level Execution (Notebook)**  
+## 2. Technology Stack
 
-1. Open the `Movie_Recommendation.ipynb` notebook in Google Colab or Jupyter.  
-2. Run all cells step-by-step.  
-3. View outputs including:  
-   - EDA charts  
-   - Collaborative filtering results  
-   - Content-based similarity results  
-   - Personalized top–N recommendations  
-   - RMSE score  
-
-_No additional configuration required for notebook execution._  
-
+| Category | Technology |
+|---|---|
+| Programming language | Python |
+| Application | Streamlit |
+| Data processing | Pandas, NumPy |
+| Machine learning | Scikit-learn |
+| Content representation | TF-IDF |
+| Similarity | Cosine similarity |
+| Movie metadata | TMDB API |
+| HTTP client | curl-cffi |
+| Environment management | python-dotenv |
 
 ---
 
-## 🖥 **Local Frontend Execution (Streamlit UI)**  
+## 3. Recommendation Architecture
 
-A **local interface** is provided for demonstration and video recording ease.  
+The current Version 1 application uses three recommendation methods.
 
-### 🔧 Installation Requirements  
-Run these commands once:  
-pip install streamlit
-pip install scikit-learn
-pip install pandas
-pip install numpy
+**Content-Based Filtering**
 
+Movie genres and tags are converted into TF-IDF vectors. Cosine similarity identifies movies with similar content.
 
-### ▶️ Running the Interface  
-Inside the project folder, run:  
+**Personalized Content Recommendations**
 
+The system averages the TF-IDF representations of movies a user rated positively. It compares this profile against the movie catalog and excludes previously rated movies.
 
-Access UI at: 
+**Popularity-Based Recommendations**
+
+A weighted-rating formula combines a movie's average rating with the global rating average, taking its rating count into account.
+
+### System flow
+
+```text
+MovieLens Datasets
+       |
+       v
+Movie Catalog and Tags
+       |
+       v
+IMDb Identity Crosswalk
+       |
+       v
+Final Runtime Catalog
+       |
+       v
+Movie Recommendation Service
+       |
+       +-------------------------+
+       |            |            |
+       v            v            v
+   Similar      Personalized   Popularity
+    Movies        Movies        Ranking
+       |            |            |
+       +------------+------------+
+                    |
+                    v
+             Genre / Year Filters
+                    |
+                    v
+              Streamlit UI
+                    |
+                    v
+               TMDB API
+                    |
+                    v
+        Posters and Movie Details
+```
+
+---
+
+## 4. Dataset Information
+
+CineMatch uses two MovieLens datasets for different purposes.
+
+### MovieLens 32M
+
+Used to construct the expanded movie catalog.
+
+- 87,585 movies
+- 32,000,204 ratings in the original dataset
+- 2,000,072 tag applications in the original dataset
+- 200,948 users in the original dataset
+
+Official source:
+
+https://grouplens.org/datasets/movielens/32m/
+
+### MovieLens Latest-Small
+
+Used for user-rating history and collaborative user information in Version 1.
+
+- 9,742 movies
+- 100,836 ratings
+- 610 users
+
+Official source:
+
+https://grouplens.org/datasets/movielens/latest/
+
+### Movie Identity Mapping
+
+The MovieLens datasets have different movie identifiers. CineMatch connects their records using normalized IMDb identifiers instead of assuming that their movie IDs are interchangeable.
+
+The tested runtime integration maps:
+- 9,466 MovieLens-small movies.
+- 100,291 rating records.
+- 610 users.
+
+The remaining records without a reliable identity mapping are excluded from the rating-based recommendation history.
+
+---
+
+## 5. Project Structure
+
+```text
+Movie_Recommendation/
+â”‚
+â”œâ”€â”€ app.py
+â”œâ”€â”€ requirements.txt
+â”œâ”€â”€ README.md
+â”œâ”€â”€ .gitignore
+â”œâ”€â”€ .env.example
+â”‚
+â”œâ”€â”€ data/
+â”‚   â”œâ”€â”€ ratings.csv
+â”‚   â”œâ”€â”€ links.csv
+â”‚   â”‚
+â”‚   â””â”€â”€ catalog/
+â”‚       â””â”€â”€ movielens_catalog_runtime.csv.gz
+â”‚
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ data/
+â”‚   â”‚   â”œâ”€â”€ catalog/
+â”‚   â”‚   â”œâ”€â”€ loaders/
+â”‚   â”‚   â””â”€â”€ preprocessing/
+â”‚   â”‚
+â”‚   â”œâ”€â”€ evaluation/
+â”‚   â”‚
+â”‚   â”œâ”€â”€ ranking/
+â”‚   â”‚
+â”‚   â”œâ”€â”€ recommenders/
+â”‚   â”‚   â”œâ”€â”€ baseline/
+â”‚   â”‚   â”œâ”€â”€ collaborative/
+â”‚   â”‚   â”œâ”€â”€ hybrid/
+â”‚   â”‚   â”œâ”€â”€ popularity/
+â”‚   â”‚   â””â”€â”€ semantic/
+â”‚   â”‚
+â”‚   â””â”€â”€ services/
+â”‚       â”œâ”€â”€ recommendation_service.py
+â”‚       â””â”€â”€ tmdb_client.py
+â”‚
+â””â”€â”€ experiments/
+    â””â”€â”€ results/
+```
+
+The runtime catalog contains 87,585 movie records and seven columns. It is compressed using gzip to reduce deployment size.
+
+The larger source catalogs, raw MovieLens archive, TMDB enrichment cache and intermediate repair files are kept outside the public application runtime.
+
+---
+
+## 6. Local Installation
+
+### Prerequisites
+
+- Python 3.13
+- Git
+- Internet connection for TMDB movie details
+
+### Step 1 â€” Clone the repository
+
+```bash
+git clone https://github.com/abhigandesri13/Moive_Recommendation_System.git
+cd Movie_Recommendation
+```
+
+### Step 2 â€” Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```powershell
+venv\Scripts\activate
+```
+
+### Step 3 â€” Install dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Step 4 â€” Configure the TMDB API key
+
+Create a local `.env` file in the project root:
+
+```text
+TMDB_API_KEY=your_tmdb_api_key
+```
+
+Do not commit `.env` to GitHub.
+
+Obtain an API key through:
+
+https://www.themoviedb.org/settings/api
+
+### Step 5 â€” Start the application
+
+```bash
+python -m streamlit run app.py
+```
+
+Open:
+
 http://localhost:8501
 
-## 🌐 Live Application (Streamlit Cloud)
+---
 
-The Movie Recommendation System is deployed using **Streamlit Cloud** and can be accessed here:
+## 7. Streamlit Cloud Deployment
 
-🔗 **Live App:** https://<your-streamlit-app-link>
+1. Push the project to GitHub.
+2. Open https://share.streamlit.io/
+3. Select **Create app**.
+4. Select your GitHub repository and branch.
+5. Set the main application file to `app.py`.
+6. Open Advanced settings and select Python 3.13.
+7. Add the following under Secrets:
 
-> Note: The app may take a few seconds to load due to cold start behavior on free hosting.
+```toml
+TMDB_API_KEY = "your_tmdb_api_key"
+```
 
+8. Deploy the application.
 
-### UI Options  
-- **Similar Movies (Collaborative Filtering)**  
-- **Similar Movies (Content-Based Filtering)**  
-- **Personalized User Recommendations**  
+The repository must contain:
+- `app.py`
+- `requirements.txt`
+- `src/`
+- `data/ratings.csv`
+- `data/links.csv`
+- `data/catalog/movielens_catalog_runtime.csv.gz`
 
-## 🚀 Deployment Details
+Never upload `.env`, API keys or the TMDB enrichment cache.
 
-- Platform: Streamlit Cloud
-- Backend: Python
-- Model Type: Hybrid Recommendation System
-- Hosting Type: Free Tier (Educational / Internship Use)
+Official deployment documentation:
 
-
+https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy
 
 ---
 
-## 🎥 **Recommended Demo Flow for Video**  
+## 8. Evaluation and Experiments
 
-1. Launch Streamlit interface  
-2. Select **Toy Story (1995)** → show CF recommendations  
-3. Select **Jumanji (1995)** → show Content-Based results  
-4. Select **User ID 1** → show personalized predictions  
-5. Close with short summary referencing the GitHub repo  
+The repository includes experimental implementations and evaluation scripts for:
 
+- Bayesian Personalized Ranking (BPR).
+- Collaborative filtering.
+- Content-based recommendation.
+- Semantic embedding recommendation.
+- Hybrid candidate generation.
+- LightGBM ranking.
+- Candidate recall analysis.
+- Precision@K, Recall@K and NDCG@K evaluation.
+- Model and hyperparameter experiments.
 
----
-
-## 📂 Project Structure
-
-DynamixNetworks_Movie_Recommendation_System/       
-│                                           
-├── app.py                                   
-├── requirements.txt                            
-├── README.md                                 
-├── .gitignore                                   
-│                                               
-├── .streamlit/                          
-│   └── config.toml                                
-├── data/                          
-│   ├── ratings.csv                              
-│   ├── movies.csv                               
-│   ├── tags.csv                                 
-│   └── links.csv                              
-│                                        
-└──          DynamixNetworks_ML_Internship_Movie_Recommendation.ipynb
-                                  
-
-
-
+These experimental components are retained in the repository. The currently deployed Version 1 application uses TF-IDF content recommendations, personalized content profiles and weighted popularity. BPR and LightGBM are not part of the active Version 1 inference pipeline.
 
 ---
 
-## 📌 **Internship Compliance Checklist**  
+## 9. API Attribution
 
-| Requirement | Status |
-|-------------|--------|
-| Task 2 Completed | ✔ |
-| Notebook Execution Verified | ✔ |
-| Frontend UI Working Locally | ✔ |
-| README Fully Updated | ✔ |
-| GitHub Repository Uploaded | ✔ |
-| LinkedIn Post + Video Explanation Done | ✔ |
-| Dataset Usage Correct | ✔ |  
+Movie metadata, posters and images are retrieved through The Movie Database (TMDB) API.
 
+The application must include an approved TMDB logo and the following notice in its About or Credits section:
+
+> This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+TMDB official attribution guidelines:
+
+https://www.themoviedb.org/about/logos-attribution
+
+TMDB developer documentation:
+
+https://developer.themoviedb.org/
 
 ---
 
-## 🙏 **Acknowledgements**  
+## 10. Dataset Acknowledgment
 
-Dataset sourced from **MovieLens / GroupLens Research**.  
-Project completed under **Dynamix Networks Machine Learning Internship**.  
+MovieLens datasets are provided by GroupLens Research.
 
+Reference:
 
+Harper, F. M., and Konstan, J. A. (2015).
+*The MovieLens Datasets: History and Context.*
+ACM Transactions on Interactive Intelligent Systems, 5(4), Article 19.
 
+https://doi.org/10.1145/2827872
 
+Review the applicable MovieLens dataset README and usage conditions before redistribution or commercial use. This project is intended as a non-commercial educational and research project.
 
+---
+
+## 11. Future Improvements
+
+Planned enhancements include:
+
+- BPR-based collaborative filtering integration.
+- Full hybrid recommendation and ranking pipeline.
+- Improved recommendation diversity.
+- Bollywood, Tollywood and Hollywood classification.
+- Verified language and dubbed-language filters.
+- Advanced user personalization.
+- Model persistence and loading.
+- FastAPI integration.
+- Docker-based deployment.
+- Recommendation monitoring and evaluation.
+
+---
+
+## 12. Project Status
+
+**Version:** 1.0 MVP
+
+Implemented:
+- Expanded movie catalog.
+- IMDb identity crosswalk.
+- TMDB metadata integration.
+- Content-based recommendations.
+- Personalized content recommendations.
+- Popularity-based recommendations.
+- Genre and release-year filters.
+- Streamlit user interface.
+- On-demand posters and movie details.
+
+**Developed using Python, Scikit-learn, Streamlit, MovieLens and TMDB.**

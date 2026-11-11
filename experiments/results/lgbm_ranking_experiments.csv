@@ -1,0 +1,2 @@
+n_estimators,learning_rate,num_leaves,candidates_per_source,users,rows,positive_labels,precision@10,recall@10,ndcg@10,total_time_seconds
+200,0.05,31,100,422,202415,1207,0.146208530805688,0.6878793499866278,0.6829108418736981,578.8407243000001

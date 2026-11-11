@@ -1,6 +1,33 @@
-__pycache__/
-.ipynb_checkpoints/
-.streamlit/secrets.toml
-.DS_Store
-venv/
 
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.coverage
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Raw datasets and backups
+data/raw/
+
+# Local catalog files and intermediate outputs
+data/catalog/*.csv
+data/catalog/*.tmp
+data/catalog/*.tmp.csv
+
+# Temporary experiment outputs
+*.log
+*.bak

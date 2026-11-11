@@ -1,0 +1,2 @@
+inner_train_rows,inner_holdout_rows,outer_train_rows,outer_validation_rows,outer_test_rows,inner_ranking_rows,outer_ranking_rows,positive_labels_inner,positive_labels_outer,users_evaluated,precision@10,recall@10,ndcg@10,total_time_seconds
+64081,8034,80419,10059,10358,202102,202415,1083,1207,422,0.03601895734597151,0.12005979538145815,0.07838206875619254,1091.1159331
