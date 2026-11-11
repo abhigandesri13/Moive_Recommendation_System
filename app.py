@@ -1,6 +1,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pandas as pd
 import streamlit as st
 
@@ -416,6 +418,24 @@ st.sidebar.caption(
     "Recommendation methods: TF-IDF content similarity, "
     "user preference profiles and weighted popularity."
 )
+
+with st.sidebar.expander("About & Credits"):
+    st.markdown("**CineMatch**")
+    st.caption("Movie discovery and personalization engine.")
+
+    tmdb_logo_path = Path(__file__).resolve().parent / "assets" / "tmdb-logo.svg"
+
+    st.image(
+        tmdb_logo_path.read_text(encoding="utf-8"),
+        width=150,
+    )
+
+    st.caption(
+        "This product uses the TMDB API but is not endorsed or certified by TMDB."
+    )
+
+    st.markdown("[Visit The Movie Database](https://www.themoviedb.org)")
+
 
 
 # ============================================================
