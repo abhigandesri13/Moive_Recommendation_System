@@ -270,6 +270,8 @@ http://localhost:8501
 
 ## 7. Streamlit Cloud Deployment
 
+**Live App:** https://ai-movie-recommendation-system.streamlit.app/
+
 1. Push the project to GitHub.
 2. Open https://share.streamlit.io/
 3. Select **Create app**.
