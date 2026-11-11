@@ -1,4 +1,4 @@
-# ðŸŽ¬ CineMatch â€” Movie Recommendation & Personalization Engine
+# 🎬 CineMatch — Movie Recommendation & Personalization Engine
 
 CineMatch is a movie recommendation application that helps users discover movies through content similarity, personalized recommendations and popularity-based ranking.
 
@@ -163,43 +163,43 @@ The remaining records without a reliable identity mapping are excluded from the 
 
 ```text
 Movie_Recommendation/
-â”‚
-â”œâ”€â”€ app.py
-â”œâ”€â”€ requirements.txt
-â”œâ”€â”€ README.md
-â”œâ”€â”€ .gitignore
-â”œâ”€â”€ .env.example
-â”‚
-â”œâ”€â”€ data/
-â”‚   â”œâ”€â”€ ratings.csv
-â”‚   â”œâ”€â”€ links.csv
-â”‚   â”‚
-â”‚   â””â”€â”€ catalog/
-â”‚       â””â”€â”€ movielens_catalog_runtime.csv.gz
-â”‚
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ data/
-â”‚   â”‚   â”œâ”€â”€ catalog/
-â”‚   â”‚   â”œâ”€â”€ loaders/
-â”‚   â”‚   â””â”€â”€ preprocessing/
-â”‚   â”‚
-â”‚   â”œâ”€â”€ evaluation/
-â”‚   â”‚
-â”‚   â”œâ”€â”€ ranking/
-â”‚   â”‚
-â”‚   â”œâ”€â”€ recommenders/
-â”‚   â”‚   â”œâ”€â”€ baseline/
-â”‚   â”‚   â”œâ”€â”€ collaborative/
-â”‚   â”‚   â”œâ”€â”€ hybrid/
-â”‚   â”‚   â”œâ”€â”€ popularity/
-â”‚   â”‚   â””â”€â”€ semantic/
-â”‚   â”‚
-â”‚   â””â”€â”€ services/
-â”‚       â”œâ”€â”€ recommendation_service.py
-â”‚       â””â”€â”€ tmdb_client.py
-â”‚
-â””â”€â”€ experiments/
-    â””â”€â”€ results/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── .env.example
+│
+├── data/
+│   ├── ratings.csv
+│   ├── links.csv
+│   │
+│   └── catalog/
+│       └── movielens_catalog_runtime.csv.gz
+│
+├── src/
+│   ├── data/
+│   │   ├── catalog/
+│   │   ├── loaders/
+│   │   └── preprocessing/
+│   │
+│   ├── evaluation/
+│   │
+│   ├── ranking/
+│   │
+│   ├── recommenders/
+│   │   ├── baseline/
+│   │   ├── collaborative/
+│   │   ├── hybrid/
+│   │   ├── popularity/
+│   │   └── semantic/
+│   │
+│   └── services/
+│       ├── recommendation_service.py
+│       └── tmdb_client.py
+│
+└── experiments/
+    └── results/
 ```
 
 The runtime catalog contains 87,585 movie records and seven columns. It is compressed using gzip to reduce deployment size.
@@ -216,14 +216,14 @@ The larger source catalogs, raw MovieLens archive, TMDB enrichment cache and int
 - Git
 - Internet connection for TMDB movie details
 
-### Step 1 â€” Clone the repository
+### Step 1 — Clone the repository
 
 ```bash
 git clone https://github.com/abhigandesri13/Moive_Recommendation_System.git
 cd Movie_Recommendation
 ```
 
-### Step 2 â€” Create a virtual environment
+### Step 2 — Create a virtual environment
 
 ```bash
 python -m venv venv
@@ -235,14 +235,14 @@ Activate it on Windows:
 venv\Scripts\activate
 ```
 
-### Step 3 â€” Install dependencies
+### Step 3 — Install dependencies
 
 ```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### Step 4 â€” Configure the TMDB API key
+### Step 4 — Configure the TMDB API key
 
 Create a local `.env` file in the project root:
 
@@ -256,7 +256,7 @@ Obtain an API key through:
 
 https://www.themoviedb.org/settings/api
 
-### Step 5 â€” Start the application
+### Step 5 — Start the application
 
 ```bash
 python -m streamlit run app.py
